@@ -1,0 +1,20 @@
+{
+  "name": "dbot_mgmt",
+  "version": "0.0.1",
+  "description": "A web management for my discord bot https://github.com/silence5k/discord_bot.git",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/server.js"
+  },
+  "author": "SileNce",
+  "license": "MIT-0",
+  "dependencies": {
+    "argon2": "^0.41.1",
+    "better-sqlite3": "^11.7.0",
+    "body-parser": "^1.20.3",
+    "cookie-parser": "^1.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  }
+}

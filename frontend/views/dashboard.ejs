@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Bot Management</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+    <header class="dashboard">
+        <h1 class="dashboard-title">Dashboard</h1>
+        <div class="user-dropdown">
+            <input id="check01" type="checkbox" name="menu" />
+            <label class="dropdown-label" for="check01">
+                <%= user.username %>
+            </label>
+            <ul class="dropdown-submenu">
+                <li><a href="/users/<%= user.user_id %>/settings">Settings</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+    <%= footer %>
+</body>
+
+</html>
