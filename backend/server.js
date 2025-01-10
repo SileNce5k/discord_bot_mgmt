@@ -14,22 +14,12 @@ app.use(cookieParser())
 
 
 
-// app.use((req, res, next) => {
-//     // TODO: This middleware will authenticate users so I don't have to do it in every specific page.
-//     // Use https://expressjs.com/en/5x/api.html#res.locals to pass authenticated user and stuff.
-//     next()
-// })
-
-
-
-// TODO: Convert to typescript
-
 const frontendPath = {
     views: path.join(__dirname, "..", "frontend", "views"),
     public:  path.join(__dirname, "..", "frontend", "public")
 }
 
-function _frontendPath(isPublic, file){ // TODO: Improve these.
+function _frontendPath(isPublic, file){ 
     if(isPublic)
         return path.join(frontendPath.public, file)
     return path.join(frontendPath.views, file)
@@ -39,12 +29,10 @@ function _frontendPath(isPublic, file){ // TODO: Improve these.
 app.use(express.static(frontendPath.public));
 app.set('views', frontendPath.views);
 
-// TODO: Check if the sql runs fail before doing stuff
 
 const databasePath = "data/database.db";
 const db = require('better-sqlite3')(databasePath);
 
-// CREATE tables 
 
 db.prepare(`
     CREATE TABLE IF NOT EXISTS users (
@@ -71,7 +59,7 @@ function verifyAuthToken(authToken){
     const authenticatedUser = db.prepare("SELECT * FROM tokens WHERE token = ?").get(authToken);
     if(!authenticatedUser) return false;
     if(authenticatedUser.token !== authToken) return false;
-    return authenticatedUser; // TODO: Check if token has expired (if expires_at has past)
+    return authenticatedUser; 
 }
 
 function getUser(userid){
@@ -84,7 +72,7 @@ app.get('/users/:id/settings', (req, res) => {
     let userId = Number(req.params.id);
     if(authenticatedUser){
         if(authenticatedUser.user_id === userId){
-            res.render("user_settings", {id: userId}) // TODO: Finish the settings page.
+            res.render("user_settings", {id: userId})
         }else {
             res.redirect(`/users/${authenticatedUser.user_id}/settings`)
         }
@@ -94,7 +82,6 @@ app.get('/users/:id/settings', (req, res) => {
 })
 
 app.get('/register', (req, res) => {
-    // TODO: Check if logged in first.
     if(verifyAuthToken(req.cookies.auth_token)){
         res.redirect("/");
         return;
@@ -133,7 +120,7 @@ app.post('/api/v1/login', async (req, res,) => {
     
     let user = db.prepare("SELECT user_id, hashed_password FROM users WHERE username = ?").get(username);
     if(!user){
-        res.redirect("/login?invalid=yes") // TODO: Make it so the url bar still shows /login on this
+        res.redirect("/login?invalid=yes")
     }else {
         let isVerified = false;
         try {
@@ -146,7 +133,7 @@ app.post('/api/v1/login', async (req, res,) => {
             const maxAge = 2592000000 // 30 days in milliseconds.
             const maxAgeTimestamp = new Date().valueOf() + maxAge
             const token = crypto.randomBytes(128).toString('base64')
-            db.prepare("INSERT INTO tokens ( token, user_id, expires_at ) VALUES (?, ?, ?)").run(token, user.user_id, maxAgeTimestamp) // TODO: Check if this fails before setting cookie.
+            db.prepare("INSERT INTO tokens ( token, user_id, expires_at ) VALUES (?, ?, ?)").run(token, user.user_id, maxAgeTimestamp)
             res.cookie("auth_token", token, {maxAge: maxAge, secure: true, httpOnly: true, sameSite: 'lax'}).redirect("/")
         }else{
             res.redirect("/login?invalid=yes")
@@ -155,7 +142,7 @@ app.post('/api/v1/login', async (req, res,) => {
 
 })
 
-app.post('/api/v1/register', async (req, res) => { // TODO: Create checks for requirements like min pw length, min username length. Do some email validation?.
+app.post('/api/v1/register', async (req, res) => {
     let username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
@@ -165,7 +152,6 @@ app.post('/api/v1/register', async (req, res) => { // TODO: Create checks for re
         const hashed_password = await argon2.hash(password);
         const createdAt = new Date().getTime();
         const isVerified = 0;
-        // TODO: Check if username already exists, will crash because username has to be unique in database
         db.prepare("INSERT INTO users (username, hashed_password, email, created_at, is_verified) VALUES (?, ?, ?, ?, ?)").run(username, hashed_password, email, createdAt, isVerified)
         res.redirect("/login");
     }
