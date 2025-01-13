@@ -12,6 +12,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser())
 
+app.use((req, res, next) => {
+    console.log(`${req.ip} requested ${req.url}`)
+    next()
+})
 
 
 const frontendPath = {
