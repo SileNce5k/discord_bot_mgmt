@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser())
 
 app.use((req, res, next) => {
-    console.log(`${req.ip} requested ${req.url}`)
+    console.log(`${req.ip} ${req.method} ${req.url}`)
     next()
 })
 
@@ -146,18 +146,43 @@ app.post('/api/v1/login', async (req, res,) => {
 
 })
 
+
+function verifyRegistration(username, password, email){
+    let validationResult = {
+        isValid: false,
+        username: false,
+        password: false,
+        email: false
+    }
+    
+    if(username.length >= 3) validationResult.username = true;
+    if(password.length >= 8) validationResult.password = true;
+    if(email) validationResult.email = true;
+
+    if(validationResult.username && validationResult.password && validationResult.email) validationResult.isValid = true;
+    return validationResult
+}
+
+
 app.post('/api/v1/register', async (req, res) => {
     let username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
     if(!username || !password || !email){
         res.render("register_missing")
-    }else{
+    }else if(verifyRegistration(username, password, email).isValid){
         const hashed_password = await argon2.hash(password);
         const createdAt = new Date().getTime();
         const isVerified = 0;
-        db.prepare("INSERT INTO users (username, hashed_password, email, created_at, is_verified) VALUES (?, ?, ?, ?, ?)").run(username, hashed_password, email, createdAt, isVerified)
+        try {
+            db.prepare("INSERT INTO users (username, hashed_password, email, created_at, is_verified) VALUES (?, ?, ?, ?, ?)").run(username, hashed_password, email, createdAt, isVerified)
+        } catch (error) {
+            console.error(error)
+            // redirect to /register with some stuff
+        }
         res.redirect("/login");
+    }else {
+        res.render("register_missing") // TODO: Create a separate page for this.
     }
 })
 
