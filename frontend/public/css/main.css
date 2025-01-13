@@ -39,7 +39,7 @@ a:visited {
 
 
 
-#check01, ul.dropdown-submenu {
+#check01, .dropdown-submenu {
     display: none;
 }
   
@@ -60,17 +60,30 @@ a:visited {
 }
 
   
-#check01:checked~ul.dropdown-submenu {
+#check01:checked~.dropdown-submenu {
 	display: inherit;
 	flex-direction: column;
 	position: inherit;
 	align-items: center;
 	justify-content: center;
 	padding: 10px 0px 0px 0px;
-	outline: 2px solid #c8c8c8;
+	/* outline: 2px solid #c8c8c8; */
 	margin-top: 55px;
+
 }
 
+.dropdown-submenu > a {
+	border: 1px solid #444;
+	border-radius: 51px;
+	width: 117%;
+	padding: 0px;
+	margin: 1px 1px 1px 1px 1px;
+	background-color: #717171;
+}
+
+.dropdown-submenu > a {
+	text-decoration-line: none;
+}
 .user-dropdown {
 	display: flex;
 	top: 10px;
@@ -81,7 +94,7 @@ a:visited {
 
 #bot {
 	width: 1200px;
-	border: 5px solid #444;
+	border: 3px solid #444;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -94,18 +107,17 @@ a:visited {
 }
 
 #bot-log {
-	border: 5px solid #444;
+	border: 3px solid #444;
 	display: flex;
-	align-items: center;
 	position: relative;
 	width: 85%;
-	height: 500px;
 	flex-direction: column;
+	height: 85%;
 }
 
 #bot-log > p {
 	font-size: 17px;
-	margin: 0px;
+	margin: 0px 0px 0px 7px;
 }
 
 #main-content {
@@ -123,6 +135,13 @@ a:visited {
 }
 
 #bot-buttons > button {
-	margin-top: 2px;
+	margin-top: 3px;
+	border-radius: 20px;
+	background-color: #6a6a6a;
+	color: #ececec;
+	border-color: #828282;
 }
 
+.dashboard {
+	text-align: center;
+}

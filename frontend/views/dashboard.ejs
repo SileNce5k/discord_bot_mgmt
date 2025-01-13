@@ -10,24 +10,29 @@
 
 <body>
     <header class="dashboard">
+        <h1 class="dashboard-title">Dashboard</h1>
         <div class="user-dropdown">
             <input id="check01" type="checkbox" name="menu" />
             <label class="dropdown-label" for="check01">
                 <%= user.username %>
             </label>
-            <ul class="dropdown-submenu">
+            <!-- <ul class="dropdown-submenu">
                 <li><a href="/users/<%= user.user_id %>/settings">Settings</a></li>
                 <li><a href="/logout">Logout</a></li>
-            </ul>
+            </ul> -->
+            <div class="dropdown-submenu">
+                <a href="/users/<%= user.user_id %>/settings">Settings</a>
+                <a href="/logout">Logout</a>
+            </div>
         </div>
     </header>
     <div id="main-content">
-        <h1 class="dashboard-title">Dashboard</h1>
         <div id="bot">
 
             <div id="bot-log">
-                <p>2025-01-13 05:55:02 - example command executed by -some-user-id-</p>
-                <p>2025-01-13 05:57:33 - userinfo command executed by -some-user-id-</p>
+                <p>1970-01-01 00:00:00 - example command executed by -some-user-id-</p>
+                <p>1970-01-01 00:00:00 - userinfo command executed by -some-user-id-</p>
+                <p>1970-01-01 00:00:00 - etc...</p>
             </div>
             <div id="bot-buttons">
                 <button>Restart</button>
