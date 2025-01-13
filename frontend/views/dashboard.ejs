@@ -10,7 +10,6 @@
 
 <body>
     <header class="dashboard">
-        <h1 class="dashboard-title">Dashboard</h1>
         <div class="user-dropdown">
             <input id="check01" type="checkbox" name="menu" />
             <label class="dropdown-label" for="check01">
@@ -22,6 +21,25 @@
             </ul>
         </div>
     </header>
+    <div id="main-content">
+        <h1 class="dashboard-title">Dashboard</h1>
+        <div id="bot">
+
+            <div id="bot-log">
+                <p>2025-01-13 05:55:02 - example command executed by -some-user-id-</p>
+                <p>2025-01-13 05:57:33 - userinfo command executed by -some-user-id-</p>
+            </div>
+            <div id="bot-buttons">
+                <button>Restart</button>
+                <button>Update</button>
+                <button>Download Config</button>
+                <button>Upload Config</button>
+                <button>Backup data</button>
+                <button>Restore data</button>
+                <button>Download logs</button>
+            </div>
+        </div>
+    </div>
     <%= footer %>
 </body>
 

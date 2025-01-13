@@ -3,7 +3,6 @@ body {
 	background-color: #262626;
 	color: #dedede;
 	font-size: 40px;
-	text-align: center;
 	font-family: "Verdana, Geneva, Tahoma, sans-serif";
     display: flex;
     flex-direction: column;
@@ -24,18 +23,13 @@ a:visited {
 }
 
 #nav {
-	/*margin-top:20%;*/
 	position: fixed;
 	bottom: 20px;
 	text-align: center;
 	width: 100%;
 
 }
-#links p {
-	margin-top: 0px;
-	margin-bottom: 0px;
 
-}
 
 
 #incorrect-login{
@@ -61,18 +55,74 @@ a:visited {
     font-weight: bolder;
 	position: absolute;
 	border-radius: 12px;
-
+	border: 2px solid #c8c8c8;
+	justify-content: center;
 }
 
   
 #check01:checked~ul.dropdown-submenu {
-    display: inherit;
+	display: inherit;
+	flex-direction: column;
+	position: inherit;
+	align-items: center;
+	justify-content: center;
+	padding: 10px 0px 0px 0px;
+	outline: 2px solid #c8c8c8;
+	margin-top: 55px;
+}
+
+.user-dropdown {
+	display: flex;
+	top: 10px;
+	right: 250px;
+	position: absolute;
+	user-select: none;
+}
+
+#bot {
+	width: 1200px;
+	border: 5px solid #444;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 600px;
+	position: absolute;
+	margin-top: 35px; 
+	top: 160px;
+	width: 62%;
+	padding: 0px;
+}
+
+#bot-log {
+	border: 5px solid #444;
+	display: flex;
+	align-items: center;
+	position: relative;
+	width: 85%;
+	height: 500px;
 	flex-direction: column;
 }
 
-.user-dropdown{
-	display:flex;
-	top: 8%;
-	right: 10%;
-	position: absolute;
+#bot-log > p {
+	font-size: 17px;
+	margin: 0px;
 }
+
+#main-content {
+	justify-content: center;
+	display: flex;
+}
+
+#bot-buttons {
+	display: inherit;
+	position: relative;
+	align-self: flex-start;
+	margin-top: 3%;
+	flex-direction: column;
+	margin-left: 40px;
+}
+
+#bot-buttons > button {
+	margin-top: 2px;
+}
+
