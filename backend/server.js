@@ -69,6 +69,7 @@ function verifyAuthToken(authToken){
     }
     if(!authenticatedUser) return false;
     if(authenticatedUser.token !== authToken) return false;
+    if(authenticatedUser.expires_at <= new Date().valueOf()) return false;
     return authenticatedUser; 
 }
 
