@@ -60,14 +60,27 @@ db.prepare(`
 
 
 function verifyAuthToken(authToken){
-    const authenticatedUser = db.prepare("SELECT * FROM tokens WHERE token = ?").get(authToken);
+    let authenticatedUser;
+    try {
+        authenticatedUser = db.prepare("SELECT * FROM tokens WHERE token = ?").get(authToken);
+    } catch (error) {
+        console.error(error)
+        return false;
+    }
     if(!authenticatedUser) return false;
     if(authenticatedUser.token !== authToken) return false;
     return authenticatedUser; 
 }
 
 function getUser(userid){
-    const user = db.prepare("SELECT user_id, username, email, created_at, is_verified FROM users WHERE user_id = ?").get(userid)
+    let user;
+    try {
+        user = db.prepare("SELECT user_id, username, email, created_at, is_verified FROM users WHERE user_id = ?").get(userid)
+        
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
     return user;
 }
 
@@ -121,8 +134,12 @@ app.get('/login', (req, res) => {
 app.post('/api/v1/login', async (req, res,) => {
     const username = req.body.username;
     const password = req.body.password;
-    
-    let user = db.prepare("SELECT user_id, hashed_password FROM users WHERE username = ?").get(username);
+    let user;
+    try {
+        user = db.prepare("SELECT user_id, hashed_password FROM users WHERE username = ?").get(username);
+    } catch (error) {
+        console.error(error) 
+    }
     if(!user){
         res.redirect("/login?invalid=yes")
     }else {
@@ -137,8 +154,13 @@ app.post('/api/v1/login', async (req, res,) => {
             const maxAge = 2592000000 // 30 days in milliseconds.
             const maxAgeTimestamp = new Date().valueOf() + maxAge
             const token = crypto.randomBytes(128).toString('base64')
-            db.prepare("INSERT INTO tokens ( token, user_id, expires_at ) VALUES (?, ?, ?)").run(token, user.user_id, maxAgeTimestamp)
-            res.cookie("auth_token", token, {maxAge: maxAge, secure: true, httpOnly: true, sameSite: 'lax'}).redirect("/")
+            try { // TODO: Improve this logic...
+                db.prepare("INSERT INTO tokens ( token, user_id, expires_at ) VALUES (?, ?, ?)").run(token, user.user_id, maxAgeTimestamp)
+                res.cookie("auth_token", token, {maxAge: maxAge, secure: true, httpOnly: true, sameSite: 'lax'}).redirect("/")
+            } catch (error) {
+                console.log(error)
+                res.redirect("/")
+            }
         }else{
             res.redirect("/login?invalid=yes")
         }
