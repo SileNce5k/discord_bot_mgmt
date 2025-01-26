@@ -133,9 +133,10 @@ app.get('/logout', (req, res) => {
 
 app.get('/login', (req, res) => {
     if(req.query.invalid === "yes"){
-        res.render("login_incorrect")
+        let invalidMessage = "Username or password incorrect"
+        res.render("login", {invalid_login: true, invalid_message: invalidMessage})
     }else{
-        res.render("login")
+        res.render("login", {invalid_login: false, invalid_message: ""})
     }
 })
 
