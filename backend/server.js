@@ -18,6 +18,16 @@ app.use((req, res, next) => {
 })
 
 
+app.use((req, res, next) => {
+
+    const authenticatedUser = verifyAuthToken(req.cookies.auth_token);
+    
+    if(authenticatedUser){
+        res.locals.user = getUser(authenticatedUser.user_id)
+    }
+    next()
+})
+
 const frontendPath = {
     views: path.join(__dirname, "..", "frontend", "views"),
     public:  path.join(__dirname, "..", "frontend", "public")
@@ -86,13 +96,12 @@ function getUser(userid){
 }
 
 app.get('/users/:id/settings', (req, res) => {
-    let authenticatedUser = verifyAuthToken(req.cookies.auth_token)
     let userId = Number(req.params.id);
-    if(authenticatedUser){
-        if(authenticatedUser.user_id === userId){
+    if(res.locals.user){
+        if(res.locals.user.user_id === userId){
             res.render("user_settings", {id: userId})
         }else {
-            res.redirect(`/users/${authenticatedUser.user_id}/settings`)
+            res.redirect(`/users/${res.locals.user.user_id}/settings`)
         }
     }else {
         res.redirect("/")
@@ -100,7 +109,7 @@ app.get('/users/:id/settings', (req, res) => {
 })
 
 app.get('/register', (req, res) => {
-    if(verifyAuthToken(req.cookies.auth_token)){
+    if(res.locals.user){
         res.redirect("/");
         return;
     }
@@ -109,11 +118,9 @@ app.get('/register', (req, res) => {
 })
 
 app.get('/', (req, res) => {
-    const authenticatedUser = verifyAuthToken(req.cookies.auth_token);
-    if(authenticatedUser){
-        const user = getUser(authenticatedUser.user_id)
+    if(res.locals.user){
         const footer = "";
-        res.render("dashboard", {user: user, footer: footer})
+        res.render("dashboard", {user: res.locals.user, footer: footer})
     }else{
         res.render("invalid_login")
     }
