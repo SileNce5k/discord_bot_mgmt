@@ -6,7 +6,7 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const argon2 = require('argon2')
 const crypto = require('crypto')
-
+const fs = require('fs')
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -45,6 +45,7 @@ app.set('views', frontendPath.views);
 
 
 const databasePath = "data/database.db";
+if(!fs.existsSync('data')) fs.mkdirSync('data');
 const db = require('better-sqlite3')(databasePath);
 
 
@@ -122,7 +123,7 @@ app.get('/', (req, res) => {
         const footer = "";
         res.render("dashboard", {user: res.locals.user, footer: footer})
     }else{
-        res.render("invalid_login")
+        res.render("login", {invalid_login: false, invalid_message: ""})
     }
 })
 
@@ -221,7 +222,7 @@ app.post('/api/v1/register', async (req, res) => {
 
 
 app.listen(port, () => {
-    console.log(`INFO:\tServer started at http://127.0.0.1:${port}`);
+    console.log(`INFO: Server started at http://127.0.0.1:${port}`);
 })
 
 
