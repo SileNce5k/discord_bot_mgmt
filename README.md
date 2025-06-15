@@ -19,6 +19,21 @@
 
 Bots will have an internal api that they communicate with the backend server over.  
 Using websockets for the follow log is probably best?
+Actually, the simplest way would be to just use http requests all the way. 
+At least in the browser client. Browser queries server for new logs every x seconds, then updates the view if something changed.
+Each discord bot would then need to have a HTTP server running that would respond to GETs by the mgmt backend.
+This would update independently from the browser. Logs could be stored in a database table? 
+Something like: 
+```sql
+CREATE TABLE logs (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	bot_name TEXT,
+	bot_ip TEXT,
+	entry TEXT,
+	date TEXT
+)
+```
+
 
 ### Misc Thoughts
 
